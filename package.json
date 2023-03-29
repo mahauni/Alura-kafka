@@ -11,7 +11,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "order": "ts-node ./src/project/NewOrder.ts"
+    "order": "ts-node ./src/project/new_order.ts"
   },
   "author": "mahauni",
   "license": "ISC"

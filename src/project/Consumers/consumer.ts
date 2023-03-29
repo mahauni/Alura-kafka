@@ -14,7 +14,7 @@ export default class ExampleConsumer {
   public async startConsumer(): Promise<void> {
     const topic: ConsumerSubscribeTopics = {
       topics: ['producer-topic'],
-      fromBeginning: false
+      fromBeginning: true
     }
 
     try {

@@ -1,22 +1,17 @@
-import ExampleConsumer from "./Consumers/consumer";
 import ProducerFactory from "./Producers/producers";
 
 interface CustomMessageFormat { a: string }
 
 const producer = new ProducerFactory();
-const consumer = new ExampleConsumer();
 
 async function main() {
-    let msg: CustomMessageFormat = {a: "Hello World"};
+    let msg: CustomMessageFormat = {a: "broker nao ta funcionand"};
 
     await producer.start();
-    await consumer.startConsumer();
-    await consumer.startBatchConsumer();
 
     await producer.sendBatch([msg]);
 
     await producer.shutdown();
-    await consumer.shutdown();
 }
 
 main();
