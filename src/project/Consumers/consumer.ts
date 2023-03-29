@@ -1,19 +1,15 @@
 import { Consumer, ConsumerSubscribeTopics, EachBatchPayload, Kafka, EachMessagePayload } from 'kafkajs'
 
-// interface CustomMessageForm { a: string };
-
-export default class ExampleConsumer {
+export default class Receiver {
   private kafkaConsumer: Consumer
-  // private messageProcessor: CustomMessageForm 
 
-  public constructor( /* messageProcessor: CustomMessageForm */ ) {
-    // this.messageProcessor = messageProcessor
-    this.kafkaConsumer = this.createKafkaConsumer()
+  public constructor(clientId: string, groupId: string) {
+    this.kafkaConsumer = this.createKafkaConsumer(clientId, groupId)
   }
 
-  public async startConsumer(): Promise<void> {
+  public async startConsumer(topics: Array<string>): Promise<void> {
     const topic: ConsumerSubscribeTopics = {
-      topics: ['producer-topic'],
+      topics,
       fromBeginning: true
     }
 
@@ -33,9 +29,9 @@ export default class ExampleConsumer {
     }
   }
 
-  public async startBatchConsumer(): Promise<void> {
+  public async startBatchConsumer(topics: Array<string>): Promise<void> {
     const topic: ConsumerSubscribeTopics = {
-      topics: ['producer-topic'],
+      topics,
       fromBeginning: false
     }
 
@@ -60,12 +56,12 @@ export default class ExampleConsumer {
     await this.kafkaConsumer.disconnect()
   }
 
-  private createKafkaConsumer(): Consumer {
+  private createKafkaConsumer(clientId: string, groupId: string): Consumer {
     const kafka = new Kafka({ 
-      clientId: 'client-id',
+      clientId,
       brokers: ['localhost:9092']
     })
-    const consumer = kafka.consumer({ groupId: 'consumer-group' })
+    const consumer = kafka.consumer({ groupId })
     return consumer
   }
 }

@@ -1,9 +1,9 @@
-import ExampleConsumer from "./Consumers/consumer";
+import Receiver from "./Consumers/consumer";
 
-const consumer = new ExampleConsumer();
+const consumer = new Receiver("I_USE_VIM_BTW", "consumer-id");
 
 async function main() {
-    consumer.startConsumer();
+    consumer.startConsumer(["I_USE_RUST_BTW"]);
 }
 
 main();

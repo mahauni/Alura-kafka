@@ -1,12 +1,16 @@
 import { Kafka, Message, Producer, ProducerBatch, TopicMessages } from 'kafkajs'
 
-interface CustomMessageFormat { a: string }
+interface MessageTemplate {
+    id: number,
+    head: string,
+    body: string,
+}
 
-export default class ProducerFactory {
+export default class Messeger {
   private producer: Producer
 
-  constructor() {
-    this.producer = this.createProducer()
+  constructor(clientId: string) {
+    this.producer = this.createProducer(clientId)
   }
 
   public async start(): Promise<void> {
@@ -21,7 +25,7 @@ export default class ProducerFactory {
     await this.producer.disconnect()
   }
 
-  public async sendBatch(messages: Array<CustomMessageFormat>): Promise<void> {
+  public async sendBatch(messages: Array<MessageTemplate>, topic: string): Promise<void> {
     const kafkaMessages: Array<Message> = messages.map((message) => {
       return {
         value: JSON.stringify(message)
@@ -29,7 +33,7 @@ export default class ProducerFactory {
     })
 
     const topicMessages: TopicMessages = {
-      topic: 'producer-topic',
+      topic,
       messages: kafkaMessages
     }
 
@@ -40,9 +44,9 @@ export default class ProducerFactory {
     await this.producer.sendBatch(batch)
   }
 
-  private createProducer() : Producer {
+  private createProducer(clientId: string) : Producer {
     const kafka = new Kafka({
-      clientId: 'client-id',
+      clientId,
       brokers: ['localhost:9092'],
     })
 
